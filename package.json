@@ -1,0 +1,65 @@
+{
+  "name": "damao-desktop-pet",
+  "productName": "大喵桌宠",
+  "version": "0.1.0",
+  "description": "大喵桌宠 —— 无限暖暖二创桌面伙伴（Mac + Win）",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
+  },
+  "author": "Damao Desktop Pet contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.damao.desktoppet",
+    "productName": "大喵桌宠",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "build/icon.png"
+    ],
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.png",
+      "category": "public.app-category.entertainment"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "大喵桌宠",
+      "artifactName": "DamaoPet-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "DamaoPet-Portable-${version}.${ext}"
+    },
+    "publish": null
+  }
+}
