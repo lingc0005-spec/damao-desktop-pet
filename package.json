@@ -1,7 +1,7 @@
 {
   "name": "damao-desktop-pet",
   "productName": "大喵桌宠",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "大喵桌宠 —— 无限暖暖二创桌面伙伴（Mac + Win）",
   "main": "main.js",
   "scripts": {
@@ -13,18 +13,19 @@
   "author": "Damao Desktop Pet contributors",
   "license": "MIT",
   "devDependencies": {
-    "electron": "31.7.7",
+    "electron": "^33.4.11",
     "electron-builder": "^24.13.3"
   },
   "build": {
-    "appId": "com.damao.desktoppet",
+    "appId": "com.damao.pet",
     "productName": "大喵桌宠",
     "files": [
       "main.js",
       "preload.js",
       "renderer/**/*",
       "assets/**/*",
-      "build/icon.png"
+      "build/icon.png",
+      "build/icon.ico"
     ],
     "mac": {
       "target": "dmg",

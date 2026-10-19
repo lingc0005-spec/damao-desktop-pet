@@ -16,8 +16,8 @@ html, body {
   position: absolute;
   left: 0;
   top: 0;
-  width: 460px;
-  height: 560px;
+  width: 368px;
+  height: 448px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -25,7 +25,7 @@ html, body {
 }
 
 #petImg {
-  width: 300px;
+  width: 240px;
   height: auto;
   pointer-events: none;
   transform-origin: 50% 95%;
@@ -48,27 +48,33 @@ html, body {
   animation: breathe 3.2s ease-in-out infinite, cloakSway 4.6s ease-in-out infinite;
 }
 
-/* 表情切换的轻微过渡 */
+/* 表情切换：淡入淡出 + 轻微缩放弹跳（切图时暂停呼吸浮动，避免 transform 冲突） */
+#petImg.state-switch,
+#petImg.state-switch.on {
+  animation: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
 #petImg.state-switch {
-  transition: opacity 0.18s ease;
   opacity: 0;
+  transform: scale(0.95);
 }
 #petImg.state-switch.on {
   opacity: 1;
+  transform: scale(1.02);
 }
 
 /* 文字气泡 */
 .bubble {
   position: absolute;
   left: 50%;
-  bottom: 330px;
+  bottom: 264px;
   transform: translateX(-50%);
-  max-width: 320px;
+  max-width: 256px;
   padding: 10px 14px;
   background: #fffdf7;
   border: 2px solid #f0c26a;
   border-radius: 14px;
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1.6;
   color: #4a3b2b;
   box-shadow: 0 4px 14px rgba(0,0,0,0.12);

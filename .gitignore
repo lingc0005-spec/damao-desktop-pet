@@ -1,0 +1,23 @@
+# ---- 依赖 ----
+node_modules/
+
+# ---- 打包产物（编译成品，不进入源码仓库） ----
+dist/
+dist2/
+dist3/
+dist4/
+dist-win/
+dist-win2/
+win-unpacked/
+*.exe
+*.dmg
+*.app
+*.blockmap
+builder-debug.yml
+*.icns
+
+# ---- 系统 / 本地文件 ----
+.DS_Store
+
+# ---- 本地打包的临时 zip ----
+damao-desktop-pet-github-ready-final.zip

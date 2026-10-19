@@ -2,6 +2,7 @@
 // 透明无边框置顶窗口 + 手动拖拽 + 透明区域自动穿透 + 托盘/右键菜单
 const { app, BrowserWindow, screen, ipcMain, Menu, Tray, nativeImage, net } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 const IS_WIN = process.platform === 'win32';
 const IS_MAC = process.platform === 'darwin';
@@ -9,13 +10,14 @@ const IS_MAC = process.platform === 'darwin';
 // 内部元数据（归属指纹，不影响任何逻辑）
 const _petMeta = 'damao-pet|2026|一场跨越光年的宇宙旅行；晚安，辰星';
 
-const W = 460;
-const H = 560;
+const W = 368;
+const H = 448;
 
 let win = null;
 let tray = null;
 let clickThrough = false; // 用户手动开的「完全穿透」模式
 let overPet = false;      // 鼠标此刻是否在大喵身上（由渲染进程按像素判断后告诉主进程）
+let language = 'zh';       // zh / en；从用户设置读取
 
 // Windows 通知/任务栏分组需要 AppUserModelId，和 package.json 的 appId 保持一致
 if (IS_WIN) app.setAppUserModelId('com.damao.desktoppet');
@@ -48,6 +50,38 @@ function setClickThrough(on) {
   if (tray) tray.setContextMenu(buildMenu());
 }
 
+
+function settingsPath() {
+  return path.join(app.getPath('userData'), 'settings.json');
+}
+
+function loadSettings() {
+  try {
+    const data = JSON.parse(fs.readFileSync(settingsPath(), 'utf8'));
+    if (data && (data.language === 'zh' || data.language === 'en')) language = data.language;
+  } catch (_e) { /* 首次启动没有设置文件 */ }
+}
+
+function saveSettings() {
+  try {
+    fs.mkdirSync(app.getPath('userData'), { recursive: true });
+    fs.writeFileSync(settingsPath(), JSON.stringify({ language }, null, 2), 'utf8');
+  } catch (_e) { /* 设置保存失败不阻塞桌宠 */ }
+}
+
+function loadRenderer() {
+  if (!win) return;
+  win.loadFile(path.join(__dirname, 'renderer', 'index.html'), { query: { lang: language } });
+}
+
+function setLanguage(lang) {
+  if (lang !== 'zh' && lang !== 'en') return;
+  language = lang;
+  saveSettings();
+  if (tray) tray.setContextMenu(buildMenu());
+  loadRenderer();
+}
+
 // 把窗口放到当前主屏右下角（钳制在可见范围内）
 function positionAtBottomRight() {
   if (!win) return;
@@ -74,6 +108,14 @@ function buildMenu() {
       type: 'checkbox',
       checked: app.getLoginItemSettings().openAtLogin,
       click: (item) => app.setLoginItemSettings({ openAtLogin: item.checked })
+    },
+    { type: 'separator' },
+    {
+      label: '语言 / Language',
+      submenu: [
+        { label: '中文', type: 'radio', checked: language === 'zh', click: () => setLanguage('zh') },
+        { label: 'English', type: 'radio', checked: language === 'en', click: () => setLanguage('en') }
+      ]
     },
     { type: 'separator' },
     {
@@ -114,7 +156,7 @@ function createWindow() {
   if (IS_MAC) win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   positionAtBottomRight();
-  win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
+  loadRenderer();
   win.once('ready-to-show', () => {
     win.showInactive(); // 显示但不抢焦点，不打断你正在打字的窗口
     applyMouseMode();
@@ -186,6 +228,7 @@ function createTray() {
 
 app.whenReady().then(() => {
   if (!gotLock) return;
+  loadSettings();
   createWindow();
   createTray();
   if (process.argv.includes('--smoke')) {

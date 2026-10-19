@@ -3,7 +3,7 @@
 > 一个以角色一致性为核心的跨平台桌面伙伴实验。  
 > A character-driven desktop companion experiment inspired by Momo from *Infinity Nikki*.
 
-**当前版本 / Current version:** `v0.1.0`  
+**当前版本 / Current version:** `v0.2.0`  
 **平台 / Platforms:** macOS + Windows  
 **技术栈 / Stack:** Electron · JavaScript · HTML/CSS · Open-Meteo
 
@@ -167,3 +167,10 @@ Weather features may obtain an approximate location depending on platform and ma
 **MIT License 不覆盖《无限暖暖》/暖暖系列的角色、名称、台词、图像、官方素材或其他第三方知识产权内容。**相关说明见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
 Original software code is licensed under the **MIT License**. Character/IP material and other third-party content are explicitly excluded from that software license; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
+
+## 🌐 语言 / Language
+
+- 默认中文；托盘/右键菜单可在 **中文 / English** 间切换。
+- Default language is Chinese. Switch between **中文 / English** from the tray/context menu.
+- 语言选择会保存在本机，下次启动自动沿用。 / The selected language is remembered across launches.
